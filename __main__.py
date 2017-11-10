@@ -74,7 +74,10 @@ def _process(previous_stats, queue):
 
 
 def sort_stats(stats):
-    return sorted(stats, key=lambda e: e[Config.sort], reverse=True)
+    if Config.sort is 0:
+        return stats
+    else:
+        return sorted(stats, key=lambda e: e[Config.sort], reverse=True)
 
 
 def display_header():
@@ -90,13 +93,14 @@ def display_header():
     )
 
     # separator
-    delim = "{}".format("#" * Config.operation_size)
-    delim = "{0:{1}} {0:.{2}} {0:.{2}} {0:.{2}} {0:.{2}} {0:.{2}}".format(
-        delim,
+    delimf = "{}".format("#" * Config.operation_size)
+    delimg = "{}".format("#" * Config.col)
+    delim = "{0:{1}} {2:>{3}} {2:>{3}} {2:>{3}} {2:>{3}} {2:>{3}}".format(
+        delimf,
         Config.operation_size,
+        delimg,
         Config.col
     )
-
 
     headnames = place_text(1, 0, text)
     sys.stdout.write(headnames)
@@ -141,7 +145,6 @@ def display_stats(stats):
                 text = "{:{col}}".format(val, col=Config.operation_size)
             else:
                 text += " {:>{col}}".format(val, col=Config.col)
-        # text = place_text( (i + head_size), 0, text)
         sys.stdout.write(clear_seq)
         sys.stdout.write(text)
     sys.stdout.flush()

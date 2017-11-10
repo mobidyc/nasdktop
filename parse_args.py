@@ -30,7 +30,7 @@ def parse_args(*argv):
                 usage()
                 os._exit(0)
 
-            if arg > 0 and arg < 6:
+            if arg >= 0 and arg < 6:
                 Config.sort = int(arg)
             else:
                 usage()
@@ -41,7 +41,8 @@ Usage: {progname} [options]
 
     \t-h, --help: __________________ Displays the usage.
     \t-f, --file: __________________ stats file or http.
-    \t-c, --column: ________________ sort on this column number - from 1 to 5.
+    \t-c, --column: ________________ sort on this column number - from 0 to 5.
+    \t____________ 0 means no sort at all
 
     Usage examples::
     {progname} -f 'http://127.0.0.1:35951/store/bizobj/DATA/0?ctl=bizobj_advanced_stats'
