@@ -66,7 +66,7 @@ def _process(previous_stats, queue):
     stats = sort_stats(stats)
     display_stats(stats)
 
-    text = place_text(term.LINES, 2, "Time: {}".format(dt.datetime.now()))
+    text = place_text(term.LINES, 2, "Time: {0}".format(dt.datetime.now()))
     sys.stdout.write(text)
     sys.stdout.flush()
 
@@ -81,7 +81,7 @@ def sort_stats(stats):
 
 
 def display_header():
-    text = "{:{firstcol}} {:>{col}} {:>{col}} {:>{col}} {:>{col}} {:>{col}}".format(
+    text = "{0:{firstcol}}  {1:>{col}}  {2:>{col}}  {3:>{col}}  {4:>{col}}  {5:>{col}}".format(
         "metric",
         "Count",
         "Parallel",
@@ -93,9 +93,9 @@ def display_header():
     )
 
     # separator
-    delimf = "{}".format("#" * Config.operation_size)
-    delimg = "{}".format("#" * Config.col)
-    delim = "{0:{1}} {2:>{3}} {2:>{3}} {2:>{3}} {2:>{3}} {2:>{3}}".format(
+    delimf = "{0}".format("#" * Config.operation_size)
+    delimg = "{0}".format("#" * Config.col)
+    delim = "{0:{1}}  {2:>{3}}  {2:>{3}}  {2:>{3}}  {2:>{3}}  {2:>{3}}".format(
         delimf,
         Config.operation_size,
         delimg,
@@ -105,7 +105,7 @@ def display_header():
     headnames = place_text(1, 0, text)
     sys.stdout.write(headnames)
 
-    separ = place_text(2, 0, "{}".format(delim))
+    separ = place_text(2, 0, "{0}".format(delim))
     sys.stdout.write(separ)
 
     sys.stdout.flush()
@@ -127,11 +127,13 @@ def display_stats(stats):
     foot_size = 1
 
     place_cursor(head_size, 0)
-    clear_seq = '{}{}'.format(term.CLEAR_EOL, term.CLEAR_BOL)
+    clear_seq = '{0}{0}'.format(term.CLEAR_EOL, term.CLEAR_BOL)
 
+    sys.stdout.write(term.NORMAL)
+    content_size = (term.LINES - (head_size + foot_size))
     for i, v in enumerate(stats):
         # stop writing when screen is filled (header + footer)
-        if i >= (term.LINES - (head_size + foot_size)):
+        if i >= content_size:
            return True
         
         if v[0] is "totalrw":
@@ -140,23 +142,30 @@ def display_stats(stats):
 
         sys.stdout.write(term.DOWN)
         text = ""
+
         for idx, val in enumerate(stats[i]):
             if idx == 0:
-                text = "{:{col}}".format(val, col=Config.operation_size)
+                text = "{0:_<{col}}".format(
+                    val,
+                    col=Config.operation_size
+                )
             else:
-                text += " {:>{col}}".format(val, col=Config.col)
+                text += "| {0:_>{col}}".format(
+                    val,
+                    col=Config.col
+                )
         sys.stdout.write(clear_seq)
         sys.stdout.write(text)
     sys.stdout.flush()
 
 
 def place_cursor(x, y):
-    sys.stdout.write("\x1b7\x1b[{:d};{:d}H".format(x, y))
+    sys.stdout.write("\x1b7\x1b[{0:d};{1:d}H".format(x, y))
 
 
 def place_text(x, y, text):
     # http://ascii-table.com/ansi-escape-sequences.php
-    return("\x1b7\x1b[{:d};{:d}H{}{}{}\x1b8".format(x, y, term.CLEAR_EOL, term.CLEAR_BOL, text[:term.COLS]))
+    return("\x1b7\x1b[{0:d};{1:d}H{2}{3}{4}\x1b8".format(x, y, term.CLEAR_EOL, term.CLEAR_BOL, text[:term.COLS]))
 
 
 def compare_stats(da, db):
