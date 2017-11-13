@@ -115,7 +115,7 @@ def display_bw(s):
     wps = (s[2] / 1e6)
     rps = (s[1] / 1e6)
     text = "READ: {reads:.{prec}f} MiB/s - WRITE: {writes:.{prec}f} MiB/s".format(writes=wps, reads=rps, prec=2)
-    text = "{:{align}{width}}".format(text, align='^', width=term.COLS)
+    text = "{0:{align}{width}}".format(text, align='^', width=term.COLS)
     text = place_text(3, 2, text)
     sys.stdout.write(text)
     sys.stdout.flush()
