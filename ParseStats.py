@@ -50,7 +50,10 @@ class ParseStats(object):
                         d = int(val)
                     except:
                         d = 0
+
                 mydict.append(d)
+            while len(mydict) < 9:
+                mydict.append(0)
 
             self.columns.append(mydict)
 
