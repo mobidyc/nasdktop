@@ -9,8 +9,8 @@ from Config import Config
 
 
 def parse_args(*argv):
-    shrt_args = "hf:c:"
-    long_args = ["help", "file=", "column="]
+    shrt_args = "hf:c:t:"
+    long_args = ["help", "file=", "column=", "time="]
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], shrt_args, long_args)
@@ -22,6 +22,8 @@ def parse_args(*argv):
             usage()
         elif opt in ("-f", "--file"):
             Config.stats_file = arg
+        elif opt in ("-t", "--time"):
+            Config.timewait = float(arg)
         elif opt in ("-c", "--column"):
             try:
                 arg = int(arg)
@@ -43,6 +45,7 @@ Usage: {progname} [options]
     \t-h, --help: __________________ Displays the usage.
     \t-f, --file: __________________ stats file or http.
     \t-c, --column: ________________ sort on this column number - from 0 to 5.
+    \t-t, --time: __________________ change the polling time in seconds.
 
 
     \t"--column 0" means no sort at all
@@ -54,7 +57,8 @@ Usage: {progname} [options]
     Usage examples::
     {progname} -f 'http://127.0.0.1:35951/store/bizobj/DATA/0?ctl=bizobj_advanced_stats'
     {progname} -f /run/scality/connectors/sfused/misc/stats_sfused
-    {progname} -c 2
+    {progname} -c 2 --time .5
+    {progname} --time 30
 
 """.format(progname=sys.argv[0])
 
