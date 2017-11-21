@@ -8,12 +8,14 @@ class _Config(object):
         self.stats_file = "/run/scality/connectors/sfused/misc/stats_sfused"
         self.subsection = 1
 
-        self.sort = 1 # column number
+        self.sort = 1  # column number
         self.col = 14
         self.cols = 60
         self.rows = 130
-        self.operation_size = 10 # size of the first column (dynamic)
+        self.operation_size = 10  # size of the first column (dynamic)
         self.bwread = 0
         self.bwwrit = 0
+        self.timewait = 1
+
 
 Config = _Config()
