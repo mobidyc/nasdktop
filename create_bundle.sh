@@ -8,7 +8,7 @@ prog_dir=$(basename "$full_dir")
 cd "$full_dir"
 
 dt=$(date +"%Y%m%d-%H%M")
-gc=$(git describe --tags --dirty --always)
+gc=$(git describe --tags --always)
 dst_name="${prog_dir}-${dt}-${gc}.py"
 tmpfile="TMP_${dst_name}"
 
