@@ -2,22 +2,24 @@
 # -*- coding: utf-8 -*-
 # vim: tabstop=4:shiftwidth=4:smarttab:expandtab:softtabstop=4:autoindent
 
-import os
-import sys
-import time
-import datetime as dt
-import os
-import pprint
-import threading
-import Queue
-import signal
-
 from Config import Config
 from parse_args import parse_args
 from ParseStats import ParseStats
 from tc import TerminalController
 
+import os
+import sys
+import time
+import datetime as dt
+import threading
+import Queue
+import signal
+
+import termios
+TERMIOS = termios
+
 term = TerminalController()
+
 
 def Main(*argv):
 
@@ -34,27 +36,77 @@ def Main(*argv):
     sys.stdout.write(term.HIDE_CURSOR)
     sys.stdout.flush()
 
+    getkey_thread = threading.Thread(
+        group=None,
+        target=getkey,
+        name="keythread"
+    )
+    getkey_thread.start()
+
     while True:
         queue = Queue.Queue()
         thread_ = threading.Thread(
             group=None,
             target=process,
             name="Thread1",
-            args=(stats_before.columns, queue),
+            args=(stats_before.columns, queue)
         )
 
         thread_.start()
-        time.sleep(1)
+
+        time.sleep(Config.timewait)
         stats_before.columns = queue.get()
-        
+
+
+def getkey():
+    global Config
+    while 1:
+        c = _getkey()
+        try:
+            if c == "0":
+                Config.sort = 0
+            if c == "1":
+                Config.sort = 1
+            if c == "2":
+                Config.sort = 2
+            if c == "3":
+                Config.sort = 3
+            if c == "4":
+                Config.sort = 4
+            if c == "5":
+                Config.sort = 5
+        except Exception:
+            import traceback
+            mesg = "Generic Exception: {}".format(traceback.format_exc())
+            print(mesg)
+            os._exit(0)
+
+
+def _getkey():
+    fd = sys.stdin.fileno()
+    old = termios.tcgetattr(fd)
+    new = termios.tcgetattr(fd)
+    new[3] = new[3] & ~TERMIOS.ICANON & ~TERMIOS.ECHO
+    new[6][TERMIOS.VMIN] = 1
+    new[6][TERMIOS.VTIME] = 0
+    termios.tcsetattr(fd, TERMIOS.TCSANOW, new)
+    c = None
+    try:
+        c = os.read(fd, 1)
+    finally:
+        termios.tcsetattr(fd, TERMIOS.TCSAFLUSH, old)
+    return c
+
 
 def process(previous_stats, queue):
     try:
         _process(previous_stats, queue)
     except Exception:
         import traceback
-        print 'generic exception: ' + traceback.format_exc()
+        mesg = "Generic Exception: {}".format(traceback.format_exc())
+        print(mesg)
         os._exit(0)
+
 
 def _process(previous_stats, queue):
     display_header()
@@ -66,7 +118,7 @@ def _process(previous_stats, queue):
     stats = sort_stats(stats)
     display_stats(stats)
 
-    text = place_text(term.LINES, 2, "Time: {0}".format(dt.datetime.now()))
+    text = place_text(term.LINES, 2, "Time: {0} / Sort Columns: {1}".format(dt.datetime.now(), Config.sort))
     sys.stdout.write(text)
     sys.stdout.flush()
 
@@ -134,8 +186,8 @@ def display_stats(stats):
     for i, v in enumerate(stats):
         # stop writing when screen is filled (header + footer)
         if i >= content_size:
-           return True
-        
+            return True
+
         if v[0] is "totalrw":
             display_bw(stats[i])
             continue
@@ -226,19 +278,19 @@ def compare_stats(da, db):
 
 
 def receive_signal(signum, stack):
-    if signum in [1,2,3,15]:
+    if signum in [1, 2, 3, 15]:
         place_cursor(term.LINES, 0)
         sys.stdout.write(term.SHOW_CURSOR)
-        print 'Caught signal %s, exiting.' %(str(signum))
+        print('Caught signal %s, exiting.' % (str(signum)))
+        os.system('stty sane')
         os._exit(0)
     else:
-        print 'Caught signal %s, ignoring.' %(str(signum))
+        print('Caught signal %s, ignoring.' % (str(signum)))
 
- 
+
 # Run the program
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, receive_signal)
 
     # run the main program
     Main(sys.argv[1:])
-

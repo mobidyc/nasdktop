@@ -26,7 +26,7 @@ def parse_args(*argv):
             try:
                 arg = int(arg)
             except:
-                print "need integer in column argument"
+                print("need integer in column argument")
                 usage()
                 os._exit(0)
 
@@ -34,6 +34,7 @@ def parse_args(*argv):
                 Config.sort = int(arg)
             else:
                 usage()
+
 
 def usage():
     message = """
@@ -45,6 +46,7 @@ Usage: {progname} [options]
 
 
     \t"--column 0" means no sort at all
+    \tTips: You can use numbers from 0 to 5 during execution to dynamically change the column sorting
 
     \tif no file is provided, the default will be:
     \t\t/run/scality/connectors/sfused/misc/stats_sfused
@@ -56,11 +58,6 @@ Usage: {progname} [options]
 
 """.format(progname=sys.argv[0])
 
-    print message
+    print(message)
 
     os._exit(0)
-
-
-
-    print "{} [-h|--help] ".format(progname)
-
