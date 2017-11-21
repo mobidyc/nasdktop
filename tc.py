@@ -73,7 +73,7 @@ class TerminalController:
     BOL=cr UP=cuu1 DOWN=cud1 LEFT=cub1 RIGHT=cuf1
     CLEAR_SCREEN=clear CLEAR_EOL=el CLEAR_BOL=el1 CLEAR_EOS=ed BOLD=bold
     BLINK=blink DIM=dim REVERSE=rev UNDERLINE=smul NORMAL=sgr0
-    HIDE_CURSOR=cinvis SHOW_CURSOR=cnorm""".split()
+    HIDE_CURSOR=civis SHOW_CURSOR=cnorm""".split()
     _COLORS = """BLACK BLUE GREEN CYAN RED MAGENTA YELLOW WHITE""".split()
     _ANSICOLORS = "BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE".split()
 
