@@ -1,0 +1,49 @@
+timestamp: 10:21:00.454081
+      operation      count         //      max//     errors   avg (ms)    slowest total (ms)   total (bytes)   total_sq (ms)
+         lookup          0          0          0          0          0          0          0               -               0
+         forget          0          0          0          0          0          0          0               -               0
+        getattr          0          0          0          0          0          0          0               -               0
+        setattr          0          0          0          0          0          0          0               -               0
+          mknod          0          0          0          0          0          0          0               -               0
+          mkdir          0          0          0          0          0          0          0               -               0
+         unlink          0          0          0          0          0          0          0               -               0
+          rmdir          0          0          0          0          0          0          0               -               0
+        symlink          0          0          0          0          0          0          0               -               0
+         rename          0          0          0          0          0          0          0               -               0
+           link          0          0          0          0          0          0          0               -               0
+       readlink          0          0          0          0          0          0          0               -               0
+           open          0          0          0          0          0          0          0               -               0
+        release          0          0          0          0          0          0          0               -               0
+          fsync          0          0          0          0          0          0          0               -               0
+        opendir          0          0          0          0          0          0          0               -               0
+        readdir          0          0          0          0          0          0          0               -               0
+     releasedir          0          0          0          0          0          0          0               -               0
+       fsyncdir          0          0          0          0          0          0          0               -               0
+         access          0          0          0          0          0          0          0               -               0
+         create          0          0          0          0          0          0          0               -               0
+       setxattr          0          0          0          0          0          0          0               -               0
+       getxattr          0          0          0          0          0          0          0               -               0
+      listxattr          0          0          0          0          0          0          0               -               0
+    removexattr          0          0          0          0          0          0          0               -               0
+         statfs          0          0          0          0          0          0          0               -               0
+          flush          0          0          0          0          0          0          0               -               0
+           read          0          0          0          0          0          0          0               0               0
+ read <   64  B          0          0          0          0          0          0          0               0               0
+ read <  512  B          0          0          0          0          0          0          0               0               0
+ read <    4 KB          0          0          0          0          0          0          0               0               0
+ read <   32 KB          0          0          0          0          0          0          0               0               0
+ read <  256 KB          0          0          0          0          0          0          0               0               0
+ read <    2 MB          0          0          0          0          0          0          0               0               0
+ read >=   2 MB          0          0          0          0          0          0          0               0               0
+          write          0          0          0          0          0          0          0               0               0
+write <   64  B          0          0          0          0          0          0          0               0               0
+write <  512  B          0          0          0          0          0          0          0               0               0
+write <    4 KB          0          0          0          0          0          0          0               0               0
+write <   32 KB          0          0          0          0          0          0          0               0               0
+write <  256 KB          0          0          0          0          0          0          0               0               0
+write <    2 MB          0          0          0          0          0          0          0               0               0
+write >=   2 MB          0          0          0          0          0          0          0               0               0
+Total (bytes):               0 read               0 written
+
+total number of operations: 0
+for the last 60 seconds, #operations per sec: 0.00

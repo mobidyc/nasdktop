@@ -18,6 +18,7 @@ zip -r "${tmpfile}" . \
 	-x '*.pyc' \
 	-x 'TMP_*' \
 	-x 'nasdktop*' \
+    -x 'stats_sfused' \
 	-x '\.*' >/dev/null
 
 cat > "${dst_name}" << EOF
