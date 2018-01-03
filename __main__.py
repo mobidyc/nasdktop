@@ -20,9 +20,11 @@ TERMIOS = termios
 
 term = TerminalController()
 
+debug = False
+if debug:
+    logfile = open("/tmp/nasdk.py.log", "w")
 
 def Main(*argv):
-
     parse_args(*argv)
 
     stats_before = ParseStats()
@@ -154,9 +156,11 @@ def display_header():
         Config.col
     )
 
+    log("line 1 : header")
     headnames = place_text(1, 0, text)
     sys.stdout.write(headnames)
 
+    log("line 2 : separator")
     separ = place_text(2, 0, "{0}".format(delim))
     sys.stdout.write(separ)
 
@@ -168,7 +172,7 @@ def display_bw(s):
     rps = (s[1] / 1e6)
     text = "READ: {reads:.{prec}f} MiB/s - WRITE: {writes:.{prec}f} MiB/s".format(writes=wps, reads=rps, prec=2)
     text = "{0:{align}{width}}".format(text, align='', width=term.COLS)
-    text = place_text(3, 2, text)
+    text = place_text(3, 0, text)
     sys.stdout.write(text)
     sys.stdout.flush()
 
@@ -183,16 +187,19 @@ def display_stats(stats):
 
     sys.stdout.write(term.NORMAL)
     content_size = (term.LINES - (head_size + foot_size))
+    log(stats)
     for i, v in enumerate(stats):
-        # stop writing when screen is filled (header + footer)
-        if i >= content_size:
-            return True
-
         if v[0] is "totalrw":
             display_bw(stats[i])
             continue
 
+        # stop writing when screen is filled (header + footer)
+        # Not a break because we still want to display the bandwidth
+        if i >= content_size:
+            continue
+
         sys.stdout.write(term.DOWN)
+        log("line {0} : stats".format(head_size))
         text = ""
 
         for idx, val in enumerate(stats[i]):
@@ -246,6 +253,7 @@ def compare_stats(da, db):
 
         metricname = db[elem][0]
         if metricname is "totalrw":
+            log("{0}".format(metricname))
             mydict = [
                 metricname,
                 (db[elem][1] - da[elem][1]),
@@ -283,9 +291,16 @@ def receive_signal(signum, stack):
         sys.stdout.write(term.SHOW_CURSOR)
         print('Caught signal %s, exiting.' % (str(signum)))
         os.system('stty sane')
+        if debug:
+            logfile.close()
         os._exit(0)
     else:
         print('Caught signal %s, ignoring.' % (str(signum)))
+
+
+def log(text):
+    if debug:
+        logfile.write("{0}\n".format(text))
 
 
 # Run the program
