@@ -1,6 +1,6 @@
 timestamp: 10:21:00.454081
       operation      count         //      max//     errors   avg (ms)    slowest total (ms)   total (bytes)   total_sq (ms)
-         lookup          0          0          0          0          0          0          0               -               0
+         lookup   34523424  334234324    2342342   42342340    2342340     234240     234234         2342453      3423423432
          forget          0          0          0          0          0          0          0               -               0
         getattr          0          0          0          0          0          0          0               -               0
         setattr          0          0          0          0          0          0          0               -               0
