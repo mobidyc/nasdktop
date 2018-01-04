@@ -90,6 +90,6 @@ class ParseStats(object):
 
     def get_max_size(self):
         for i, v in enumerate(self.columns):
-            if len(v[0]) > Config.operation_size:
-                Config.operation_size = len(v[0])
+            if len(v[0]) > Config.col_size[0]:
+                Config.col_size[0] = len(v[0])
 

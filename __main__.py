@@ -14,6 +14,7 @@ import datetime as dt
 import threading
 import Queue
 import signal
+import math
 
 import termios
 TERMIOS = termios
@@ -135,25 +136,33 @@ def sort_stats(stats):
 
 
 def display_header():
-    text = "{0:{firstcol}}  {1:>{col}}  {2:>{col}}  {3:>{col}}  {4:>{col}}  {5:>{col}}".format(
-        "metric",
-        "Count",
-        "Parallel",
-        "Errors",
-        "Latency(ms)",
-        "Size(bytes)",
-        firstcol=Config.operation_size,
-        col=Config.col
+    text = "{0:>{firstcol}}  {1:>{col1}}  {2:>{col2}}  {3:>{col3}}  {4:>{col4}}  {5:>{col5}}".format(
+        "Name",
+        "Cnt",
+        "//",
+        "Errs",
+        "Latms",
+        "bytes_sz",
+        firstcol=Config.col_size[0],
+        col1=Config.col_size[1],
+        col2=Config.col_size[2],
+        col3=Config.col_size[3],
+        col4=Config.col_size[4],
+        col5=Config.col_size[5]
     )
 
     # separator
-    delimf = "{0}".format("#" * Config.operation_size)
+    delimf = "{0}".format("#" * Config.col_size[0])
     delimg = "{0}".format("#" * Config.col)
-    delim = "{0:{1}}  {2:>{3}}  {2:>{3}}  {2:>{3}}  {2:>{3}}  {2:>{3}}".format(
+    delim = "{0:{1}}  {2:>{3}}  {2:>{4}}  {2:>{5}}  {2:>{6}}  {2:>{7}}".format(
         delimf,
-        Config.operation_size,
+        Config.col_size[0],
         delimg,
-        Config.col
+        Config.col_size[1],
+        Config.col_size[2],
+        Config.col_size[3],
+        Config.col_size[4],
+        Config.col_size[5]
     )
 
     log("line 1 : header")
@@ -204,14 +213,16 @@ def display_stats(stats):
 
         for idx, val in enumerate(stats[i]):
             if idx == 0:
-                text = "{0:_<{col}}".format(
+                text = "{0:>{col}}".format(
                     val,
-                    col=Config.operation_size
+                    col=Config.col_size[0]
                 )
             else:
+                if len(str(val))+1 > Config.col_size[idx]:
+                    Config.col_size[idx] = len(str(val))+1
                 text += "| {0:_>{col}}".format(
                     val,
-                    col=Config.col
+                    col=Config.col_size[idx]
                 )
         sys.stdout.write(clear_seq)
         sys.stdout.write(text)

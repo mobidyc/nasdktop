@@ -9,13 +9,12 @@ class _Config(object):
         self.subsection = 1
 
         self.sort = 1  # column number
-        self.col = 14
+        self.col = 4
         self.cols = 60
         self.rows = 130
-        self.operation_size = 10  # size of the first column (dynamic)
         self.bwread = 0
         self.bwwrit = 0
         self.timewait = 1
-
+        self.col_size = [10, 5, 5, 5, 5, 5]  # default size of the columns, in order
 
 Config = _Config()
